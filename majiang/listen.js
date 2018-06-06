@@ -1,4 +1,4 @@
-const __paiList = require('./const.js')
+const {__paiList} = require('./const.js')
 
 // 111
 const _listen = (_probablyHuPai) => {

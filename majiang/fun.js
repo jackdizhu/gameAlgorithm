@@ -3,43 +3,11 @@ let log = (obj) => {
   console.log(str)
 }
 
-// `万饼条 东南西北中发白`
-// `123456789`
-let _arr = [
-  {
-    key: 'T',
-    val: '1'
-  },
-  {
-    key: 'T',
-    val: '1'
-  },
-
-  {
-    key: 'T',
-    val: '2'
-  },
-  {
-    key: 'T',
-    val: '3'
-  },
-  {
-    key: 'T',
-    val: '4'
-  },
-  {
-    key: 'T',
-    val: '5'
-  },
-  {
-    key: 'T',
-    val: '5'
-  },
-  {
-    key: 'T',
-    val: '5'
-  }
-]
+// 11-19 万
+// 21-29 饼
+// 31-39 条
+// 41-47 东南西北中发白`
+let _arr = [41,41,11,11,11,21,22,23]
 
 const group = []
 const groupList = {
@@ -47,23 +15,27 @@ const groupList = {
   other: []
 }
 
+// 利用 对象去重
+const __obj = {}
 // 查找重复 对 生成序列
-const checkRepeat = (el, i) => {
+const __checkRepeat = (el, i) => {
   const groupList = {}
   const repeat = []
   const other = []
   let _i = null
-  repeat.push(i)
+  repeat.push(el)
   for (let j = 0; j < _arr.length; j++) {
     if (j === i) {
       continue
     }
     const _el = _arr[j]
-    if (_el.key === el.key &&　_el.val === el.val && (repeat.length !== 2)) {
+    if (_el === el && (repeat.length !== 2) && !__obj[_el]) {
       _i = j
-      repeat.push(j)
+      // 去重
+      __obj[_el] = true
+      repeat.push(_el)
     } else {
-      other.push(j)
+      other.push(_el)
     }
   }
   if (_i) {
@@ -74,15 +46,25 @@ const checkRepeat = (el, i) => {
   return _i
 }
 
+
 const huPai = (_arr) => {
   for (let i = 0; i < _arr.length; i++) {
     const el = _arr[i]
-    let _i = checkRepeat(el, i)
+    let _i = __checkRepeat(el, i)
     if (_i) {
       group.push(JSON.parse(JSON.stringify(_i)))
     }
   }
 }
+// 排序
+const __sort = (_arr) => {
+  _arr.sort((a, b) => {
+    return a - b
+  })
+}
+
+__sort(_arr)
+
 huPai(_arr)
 log(group)
 

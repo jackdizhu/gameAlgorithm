@@ -126,6 +126,8 @@ const huPai = (_arr) => {
   let _probablyHuPai = []
   // 听牌
   let _listen = []
+  // 其他牌型 丢牌 统计使用
+  let _other = []
   //  牌列表重新排序
   __sort(_arr)
   let group = __checkRepeatFor2(_arr)
@@ -136,12 +138,15 @@ const huPai = (_arr) => {
     } else if (group[i].other.length === 3) {
       // 统计 可能通过数据
       _probablyHuPai.push(group[i])
+    } else {
+      // 统计 其他牌型
+      _other.push(group[i])
     }
   }
   // 计算 听牌
   _listen = _listenFn(_probablyHuPai)
   // 数据隔离
-  return JSON.parse(JSON.stringify({_huPai, _probablyHuPai, _listen}))
+  return JSON.parse(JSON.stringify({_huPai, _probablyHuPai, _listen, _other}))
 }
 
 module.exports = huPai

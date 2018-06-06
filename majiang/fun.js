@@ -1,3 +1,5 @@
+const _listenFn = require('./listen.js')
+
 let log = (obj) => {
   let str = typeof obj === 'object' ? JSON.stringify(obj, null, 2) : obj
   console.log(str)
@@ -7,7 +9,7 @@ let log = (obj) => {
 // 21-29 饼
 // 31-39 条
 // 41-47 东南西北中发白
-let _arr = [41,41,11,11,11,21,22,23]
+// let _arr = [41,41,11,11,11,21,22,24]
 
 
 // 排序
@@ -20,7 +22,7 @@ const __sort = (_arr) => {
 // 利用 对象去重
 const __obj = {}
 // 查找重复 对 生成序列
-const __checkRepeat = (el, i) => {
+const __checkRepeat = (_arr, el, i) => {
   const groupList = {}
   const repeat2 = []
   const other = []
@@ -64,7 +66,7 @@ const __checkRepeatFor2 = (_arr) => {
   const group = []
   for (let i = 0; i < _arr.length; i++) {
     const el = _arr[i]
-    let _i = __checkRepeat(el, i)
+    let _i = __checkRepeat(_arr, el, i)
     if (_i) {
       group.push(JSON.parse(JSON.stringify(_i)))
     }
@@ -118,7 +120,12 @@ const __checkRepeatFor3 = (_arr) => {
 }
 
 const huPai = (_arr) => {
+  // 通过数据
   let _huPai = null
+  // 可能通过数据
+  let _probablyHuPai = []
+  // 听牌
+  let _listen = []
   //  牌列表重新排序
   __sort(_arr)
   let group = __checkRepeatFor2(_arr)
@@ -126,11 +133,15 @@ const huPai = (_arr) => {
     if (group[i].other.length === 0) {
       _huPai = group[i]
       break
+    } else if (group[i].other.length === 3) {
+      // 统计 可能通过数据
+      _probablyHuPai.push(group[i])
     }
   }
-  return _huPai
+  // 计算 听牌
+  _listen = _listenFn(_probablyHuPai)
+  // 数据隔离
+  return JSON.parse(JSON.stringify({_huPai, _probablyHuPai, _listen}))
 }
 
-
-log(huPai(_arr))
-
+module.exports = huPai
